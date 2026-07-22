@@ -1,0 +1,571 @@
+:root {
+  --bg: #0a0b0f;
+  --bg-soft: #12141b;
+  --panel: #15171f;
+  --panel-border: rgba(230, 228, 221, 0.09);
+  --text: #e6e4dd;
+  --muted: #8b8f9c;
+  --brass: #e8b84b;
+  --brass-dim: #b98f2e;
+  --slate: #6c8a9c;
+  --slate-dim: #3d5a6c;
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Inter", -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--brass);
+  color: #0a0b0f;
+}
+
+/* focus visibility, kept subtle but present */
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+
+.app-shell {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.scene-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 40px;
+  pointer-events: none;
+}
+
+.topbar * {
+  pointer-events: auto;
+}
+
+.brand {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.brand strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.topbar-hint {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar-hint .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brass);
+  box-shadow: 0 0 8px var(--brass);
+}
+
+/* ---------- Intro copy over the scene ---------- */
+.intro {
+  position: fixed;
+  left: 40px;
+  bottom: 48px;
+  z-index: 15;
+  max-width: 460px;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.intro.hidden {
+  opacity: 0;
+}
+
+.intro .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin: 0 0 14px 0;
+}
+
+.intro h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(32px, 4.2vw, 54px);
+  line-height: 1.05;
+  margin: 0 0 14px 0;
+}
+
+.intro p {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ---------- Object labels floating in 3D space (HTML overlay via drei Html) ---------- */
+.object-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: rgba(10, 11, 15, 0.75);
+  border: 1px solid var(--panel-border);
+  padding: 6px 10px;
+  border-radius: 3px;
+  white-space: nowrap;
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+  transform: translate(-50%, -140%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.object-tag .idx {
+  color: var(--brass);
+}
+
+/* ---------- Side panel (the "file" that opens) ---------- */
+.panel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.panel-overlay.open {
+  pointer-events: auto;
+}
+
+.panel-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 11, 15, 0);
+  transition: background 0.4s ease;
+}
+
+.panel-overlay.open .panel-scrim {
+  background: rgba(10, 11, 15, 0.55);
+}
+
+.panel {
+  position: relative;
+  width: min(560px, 100%);
+  height: 100%;
+  background: var(--panel);
+  border-left: 1px solid var(--panel-border);
+  padding: 56px 44px 44px 44px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.panel-overlay.open .panel {
+  transform: translateX(0);
+}
+
+.panel-file-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--brass);
+  text-transform: uppercase;
+  border: 1px solid var(--brass-dim);
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 2px;
+  margin-bottom: 22px;
+}
+
+.panel h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 32px;
+  margin: 0 0 8px 0;
+}
+
+.panel .panel-sub {
+  color: var(--muted);
+  font-size: 15px;
+  margin: 0 0 32px 0;
+}
+
+.panel-close {
+  position: absolute;
+  top: 44px;
+  right: 44px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--panel-border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.panel-close:hover {
+  border-color: var(--brass);
+  color: var(--brass);
+}
+
+/* ---------- Reusable content bits inside panels ---------- */
+.card {
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 16px;
+  background: var(--bg-soft);
+}
+
+.card h3 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+}
+
+.card .tagline {
+  color: var(--brass);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  margin: 0 0 10px 0;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tag-chip {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 9px;
+  border-radius: 3px;
+  border: 1px solid var(--panel-border);
+  color: var(--slate);
+}
+
+.link-row {
+  display: flex;
+  gap: 18px;
+}
+
+.link-row a {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--brass-dim);
+  padding-bottom: 2px;
+}
+
+.link-row a:hover {
+  color: var(--brass);
+}
+
+/* Skills grid */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.skill-pill {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  border: 1px solid var(--panel-border);
+  padding: 10px 12px;
+  border-radius: 4px;
+  color: var(--text);
+  display: flex;
+  justify-content: space-between;
+}
+
+.skill-pill span.lvl {
+  color: var(--brass);
+}
+
+/* Achievement rows */
+.ach-row {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.ach-row:last-child {
+  border-bottom: none;
+}
+
+.ach-icon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--brass-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brass);
+  font-size: 16px;
+}
+
+.ach-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+/* Contact form */
+.form-field {
+  margin-bottom: 18px;
+}
+
+.form-field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  background: var(--bg-soft);
+  border: 1px solid var(--panel-border);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 12px 14px;
+  border-radius: 4px;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: var(--brass);
+}
+
+.submit-btn {
+  background: var(--brass);
+  color: #14100a;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 13px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.submit-btn:hover {
+  filter: brightness(1.1);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-status {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+
+.form-status.ok {
+  color: #7bc47f;
+}
+
+.form-status.err {
+  color: #d97b6c;
+}
+
+.direct-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--panel-border);
+}
+
+.direct-contact a {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--slate);
+  text-decoration: none;
+}
+
+.direct-contact a:hover {
+  color: var(--brass);
+}
+
+/* Bio block for the "book" / about+skills panel */
+.bio-text p {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--text);
+  margin: 0 0 16px 0;
+}
+
+.bio-divider {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 28px 0 14px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bio-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--panel-border);
+}
+
+/* ---------- Loader ---------- */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loader .loader-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.loader-bar {
+  width: 200px;
+  height: 2px;
+  background: var(--panel-border);
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  height: 100%;
+  background: var(--brass);
+  transition: width 0.2s ease;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 720px) {
+  .topbar {
+    padding: 20px;
+  }
+  .topbar-hint span.label {
+    display: none;
+  }
+  .intro {
+    left: 20px;
+    right: 20px;
+    bottom: 30px;
+    max-width: none;
+  }
+  .panel {
+    width: 100%;
+    padding: 44px 24px 32px 24px;
+  }
+  .panel-close {
+    top: 20px;
+    right: 20px;
+  }
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+}
