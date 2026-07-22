@@ -6,11 +6,12 @@ const router=express.Router()
 router.get("/",async function (req,res) {
     try {
         const projects=await Project.find().sort({order:1,createdAt:-1})
-        res.status(200).json({
-            message:"project fetch successfully",
-            projects
+        // res.status(200).json({
+        //     message:"project fetch successfully",
+        //     projects
 
-        })
+        // })
+          res.status(200).json(projects);
     } catch (err) {
         res.status(500).json({
             message:"failed to fetch projects",

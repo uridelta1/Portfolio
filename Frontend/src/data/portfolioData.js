@@ -11,11 +11,11 @@ export const profile = {
     "Before development I studied computer science and spent a couple of years in a support-engineering role, which is where the obsession with clear error messages and calm interfaces started.",
     "Outside of client work I maintain a couple of small open-source tools and I'm slowly writing a longer piece on rendering performance in the browser.",
   ],
-  email: "hello@example.com",
+  email: "uridelta1@gmail.com",
   socials: [
-    { label: "GitHub", url: "https://github.com/example" },
-    { label: "LinkedIn", url: "https://linkedin.com/in/example" },
-    { label: "Twitter / X", url: "https://twitter.com/example" },
+    { label: "GitHub", url: "https://github.com/uridelta1" },
+    { label: "Instagram", url: "https://www.instagram.com/datta030?igsh=MWdubTdqZHVqbnpzMA==" },
+    // { label: "Twitter / X", url: "https://twitter.com/example" },
   ],
 };
 

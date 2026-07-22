@@ -13,7 +13,6 @@ const ProjectSchema = new mongoose.Schema({
     required: true,
   },
   stack: [{ type: String }],
-  image: { type: String },
   liveUrl: { type: String },
   repoUrl: { type: String },
   order: { type: Number, default: 0 },
