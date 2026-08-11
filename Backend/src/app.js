@@ -1,41 +1,48 @@
-require('dotenv').config()
 
-const express = require('express')
-const rateLimit = require('express-rate-limit')
-const cors = require('cors')
+require("dotenv").config();
 
-const Projectrouter = require('./routes/project')
-const Achievementrouter = require('./routes/achievement')
-const Messagerouter = require('./routes/message')
+const express = require("express");
+const rateLimit = require("express-rate-limit");
+const cors = require("cors");
 
-const app = express()
+const Projectrouter = require("./routes/project");
+const Achievementrouter = require("./routes/achievement");
+const Messagerouter = require("./routes/message");
 
-app.use(express.json())
+const app = express();
+
+app.use(express.json());
 
 // Allowed frontend origins
 const allowedOrigins = (
-  process.env.CLIENT_ORIGIN || 'http://localhost:5173'
+  process.env.CLIENT_ORIGIN || "http://localhost:5173"
 )
-  .split(',')
-  .map(origin => origin.trim())
+  .split(",")
+  .map((origin) => origin.trim());
 
 app.use(
   cors({
     origin: allowedOrigins,
   })
-)
+);
 
 // Rate limit for contact form
 const contactLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
   message: {
-    error: 'Too many messages sent. Please try again later.',
+    error: "Too many messages sent. Please try again later.",
   },
-})
+});
 
-app.use('/api/Project', Projectrouter)
-app.use('/api/Achievement', Achievementrouter)
-app.use('/api/Message', contactLimiter, Messagerouter)
+app.use("/api/Project", Projectrouter);
+app.use("/api/Achievement", Achievementrouter);
+app.use("/api/Message", contactLimiter, Messagerouter);
 
-module.exports = app
+app.get("/", (req, res) => {
+  res.json({
+    message: "Portfolio backend is running",
+  });
+});
+
+module.exports = app;
