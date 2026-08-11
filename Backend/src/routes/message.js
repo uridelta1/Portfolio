@@ -76,8 +76,11 @@ router.post("/", async function (req, res) {
   }
 
   try {
-    await MessageModel.create({ name, email, message });
-
+    try {
+      await MessageModel.create({ name, email, message });
+    } catch (dbErr) {
+      console.warn("[contact] DB Save failed, but continuing to send email:", dbErr.message);
+    }
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
