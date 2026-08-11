@@ -1,4 +1,3 @@
-
 require("dotenv").config();
 
 const express = require("express");
@@ -26,6 +25,13 @@ app.use(
   })
 );
 
+// Health check
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Portfolio backend is running",
+  });
+});
+
 // Rate limit for contact form
 const contactLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -38,11 +44,5 @@ const contactLimiter = rateLimit({
 app.use("/api/Project", Projectrouter);
 app.use("/api/Achievement", Achievementrouter);
 app.use("/api/Message", contactLimiter, Messagerouter);
-
-app.get("/", (req, res) => {
-  res.json({
-    message: "Portfolio backend is running",
-  });
-});
 
 module.exports = app;
