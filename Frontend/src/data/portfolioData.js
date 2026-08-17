@@ -76,7 +76,7 @@ export const projects = [
     description:
         "An AI-powered event photo platform where guests upload a selfie and instantly find event photos they appear in. Face detection and recognition run in the browser, while the backend handles authentication, event management, photo uploads, face descriptors, and matching.",
     stack: ["React","Node.js","Express","face-api.js","TensorFlow.js","JWT","lowdb","Tailwind CSS",],
-    liveUrl: "http://35.73.241.63:4000/",
+    liveUrl: "https://facevault01.vercel.app/",
     repoUrl: "https://github.com/uridelta1/facevault01.git",
   },
   {

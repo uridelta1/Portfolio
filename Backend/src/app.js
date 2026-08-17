@@ -7,6 +7,7 @@ const cors = require("cors");
 const Projectrouter = require("./routes/project");
 const Achievementrouter = require("./routes/achievement");
 const Messagerouter = require("./routes/message");
+const Authrouter = require("./routes/auth");
 
 const app = express();
 
@@ -63,5 +64,6 @@ const contactLimiter = rateLimit({
 app.use("/api/Project", Projectrouter);
 app.use("/api/Achievement", Achievementrouter);
 app.use("/api/Message", contactLimiter, Messagerouter);
+app.use("/api/auth", Authrouter);
 
 module.exports = app;
