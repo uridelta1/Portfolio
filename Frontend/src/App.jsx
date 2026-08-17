@@ -83,5 +83,5 @@ export default function App() {
         {activePanel === "contact" && <Contact profile={profile} />}
       </Panel>
     </div>
-  );
+  )
 }
