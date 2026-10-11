@@ -96,8 +96,20 @@ export const projects = [
     liveUrl: "https://inteview-ai-prep.vercel.app/",
     repoUrl: "https://github.com/uridelta1/Inteview-Ai-Prep.git",
   },
+
+{
+  _id: "p3",
+  title: "CafeOS",
+  tagline: "All-in-one café management and operations platform",
+  description:
+    "A full-stack café management platform for managing products, orders, café settings, and sales analytics from a centralized dashboard. Built with React and Vite, with Express.js powering the backend, MongoDB for data storage, and JWT authentication for secure access. Deployed on Vercel and Render.",
+  stack: ["React", "Vite", "JavaScript", "Node.js", "Express.js", "MongoDB", "Mongoose", "JWT", "Axios", "Vercel", "Render"],
+  liveUrl: "https://uri-verse-cafe.vercel.app/",
+  repoUrl: "https://github.com/uridelta1/CafeOS.git",
+},
+
   {
-    _id: "p3",
+    _id: "p4",
     title: "Cloudinary",
     tagline: "Cloud-based media management and image delivery platform",
     description:
